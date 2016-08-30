@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/cocoapods/l/ElasticTransition.svg?style=flat)](http://cocoapods.org/pods/ElasticTransition)
 [![Platform](https://img.shields.io/cocoapods/p/ElasticTransition.svg?style=flat)](http://cocoapods.org/pods/ElasticTransition)
 
-This project tries to replicate the transition that you can find in Snapchat when you pull down to access Profile screen.
+This project tries to replicate the transition that you can find on Snapchat when you pull down to access Profile screen.
 
 This is the original Snapchat transition:
 

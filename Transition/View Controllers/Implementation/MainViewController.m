@@ -31,8 +31,7 @@ static CGFloat const kButtonsDisplacement = 30;
 
 @implementation MainViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     self.originalSnapchatButtonTopConstraintConstant =
@@ -52,8 +51,7 @@ static CGFloat const kButtonsDisplacement = 30;
 
 #pragma mark - Buttons
 
-- (void)updateBackgroundWithProgress:(CGFloat)progress
-{
+- (void)updateBackgroundWithProgress:(CGFloat)progress {
     CGFloat value = (self.containerViewController.isOverViewVisible ?
                      1 - fabs(progress):
                      progress);
@@ -61,8 +59,7 @@ static CGFloat const kButtonsDisplacement = 30;
     self.backgroundVisualEffectView.alpha = value;
 }
 
-- (void)updateButtonsAlphaWithProgress:(CGFloat)progress
-{
+- (void)updateButtonsAlphaWithProgress:(CGFloat)progress {
     CGFloat value = (self.containerViewController.isOverViewVisible ?
                      fabs(fmin(0, progress + 0.5) * 2):
                      fmax(0, 1 - (progress * 2)));
@@ -72,8 +69,7 @@ static CGFloat const kButtonsDisplacement = 30;
     self.groupsButton.alpha = value;
 }
 
-- (void)transformContentWithProgress:(CGFloat)progress
-{
+- (void)transformContentWithProgress:(CGFloat)progress {
     CGFloat translationY = progress * self.view.frame.size.height;
     self.snapchatButton.transform = CGAffineTransformMakeTranslation(0, translationY);
     
@@ -84,22 +80,19 @@ static CGFloat const kButtonsDisplacement = 30;
 
 #pragma mark - IBActions
 
-- (IBAction)snapchatButtonTouched:(id)sender
-{
+- (IBAction)snapchatButtonTouched:(id)sender {
     [self.containerViewController presentOverViewController];
 }
 
 #pragma mark - ContainerChildViewController
 
-- (void)updateInteractiveTransition:(CGFloat)progress
-{
+- (void)updateInteractiveTransition:(CGFloat)progress {
     [self transformContentWithProgress:progress];
     [self updateButtonsAlphaWithProgress:progress];
     [self updateBackgroundWithProgress:progress];
 }
 
-- (void)cancelInteractiveTransition
-{
+- (void)cancelInteractiveTransition {
     CGFloat progress = 0;
     
     __block typeof(self) blockSelf = self;
@@ -121,8 +114,7 @@ static CGFloat const kButtonsDisplacement = 30;
                      completion:nil];
 }
 
-- (void)finishInteractiveTransition
-{
+- (void)finishInteractiveTransition {
     __block typeof(self) blockSelf = self;
    
     CGFloat progress = (self.containerViewController.isOverViewVisible ? -1 : 1);
@@ -145,15 +137,13 @@ static CGFloat const kButtonsDisplacement = 30;
      kButtonsDisplacement +
      self.originalGroupsButtonTrailingConstraintConstant);
     
-    void (^AnimationBlock)(void) = ^void (void)
-    {
+    void (^AnimationBlock)(void) = ^void (void) {
         [blockSelf transformContentWithProgress:progress];
         [blockSelf updateButtonsAlphaWithProgress:progress];
         [blockSelf updateBackgroundWithProgress:progress];
     };
     
-    void (^CompletionBlock)(BOOL finished) = ^void (BOOL finished)
-    {
+    void (^CompletionBlock)(BOOL finished) = ^void (BOOL finished) {
         blockSelf.snapchatButtonTopConstraint.constant =
         newSnapchatButtonTopConstraintConstant;
         

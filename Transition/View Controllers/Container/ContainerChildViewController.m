@@ -10,18 +10,15 @@
 
 @implementation ContainerChildViewController
 
-- (void)updateInteractiveTransition:(CGFloat)progress
-{
+- (void)updateInteractiveTransition:(CGFloat)progress {
     // Override
 }
 
-- (void)cancelInteractiveTransition
-{
+- (void)cancelInteractiveTransition {
     // Override
 }
 
-- (void)finishInteractiveTransition
-{
+- (void)finishInteractiveTransition {
     // Override
 }
 

@@ -10,8 +10,7 @@
 
 @implementation ProfileViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
 }

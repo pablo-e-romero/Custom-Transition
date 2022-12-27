@@ -42,51 +42,38 @@ static CGFloat const kActionButtonSmallSize = 50.0;
 
 @implementation ContainerViewController
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
     
     self.overViewVisible = NO;
     self.overViewTopEstimatedValue = -[UIScreen mainScreen].bounds.size.height;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self addGestureRecogniserOnView:self.view];
     
-    self.overViewTopConstraint.constant =
-    -[UIScreen mainScreen].bounds.size.height;
-    
-    self.originalActionButtonBottomConstraintConstant =
-    self.actionButtonBottomConstraint.constant;
-    
-    self.originalActionButtonWidthConstraintConstant =
-    self.actionButtonWidthConstraint.constant;
+    self.overViewTopConstraint.constant = -[UIScreen mainScreen].bounds.size.height;
+    self.originalActionButtonBottomConstraintConstant = self.actionButtonBottomConstraint.constant;
+    self.originalActionButtonWidthConstraintConstant = self.actionButtonWidthConstraint.constant;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
+- (BOOL)prefersStatusBarHidden {
     static CGFloat const kVisibleStatusBarRange = -10.0;
     return (self.overViewTopEstimatedValue < kVisibleStatusBarRange);
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
+- (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"embedOver"])
-    {
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"embedOver"]) {
         ContainerChildViewController *viewController = segue.destinationViewController;
         viewController.containerViewController = self;
         self.overViewController = segue.destinationViewController;
-    }
-    else if ([segue.identifier isEqualToString:@"embedMain"])
-    {
+    } else if ([segue.identifier isEqualToString:@"embedMain"]) {
         ContainerChildViewController *viewController = segue.destinationViewController;
         viewController.containerViewController = self;
         self.mainViewController = segue.destinationViewController;
@@ -95,16 +82,13 @@ static CGFloat const kActionButtonSmallSize = 50.0;
 
 #pragma mark - Action button
 
-- (IBAction)actionButtonTouched:(id)sender
-{
-    if (self.isOverViewVisible)
-    {
+- (IBAction)actionButtonTouched:(id)sender {
+    if (self.isOverViewVisible) {
         [self dismissOverViewController];
     }
 }
 
-- (void)transformContentWithProgress:(CGFloat)progress
-{
+- (void)transformContentWithProgress:(CGFloat)progress {
     // Over view container - Make translation
     
     CGFloat translationY = progress * self.view.frame.size.height;
@@ -113,10 +97,7 @@ static CGFloat const kActionButtonSmallSize = 50.0;
     
     // Action button - Make scale
     
-    CGFloat value =
-    (self.isOverViewVisible ?
-     fabs(progress) :
-     1.0 - progress);
+    CGFloat value = (self.isOverViewVisible ? fabs(progress) : 1.0 - progress);
     
     CGFloat newActionButtonSize =
     kActionButtonSmallSize + value *
@@ -148,23 +129,19 @@ static CGFloat const kActionButtonSmallSize = 50.0;
 
 #pragma mark - Transition
 
-- (CGFloat)transitionAnimationDuration
-{
+- (CGFloat)transitionAnimationDuration {
     return 0.25;
 }
 
-- (void)dismissOverViewController
-{
+- (void)dismissOverViewController {
     [self finishInteractiveTransition];
 }
 
-- (void)presentOverViewController
-{
+- (void)presentOverViewController {
     [self finishInteractiveTransition];
 }
 
-- (void)updateInteractiveTransition:(CGFloat)progress
-{
+- (void)updateInteractiveTransition:(CGFloat)progress {
     [self setNeedsStatusBarAppearanceUpdate];
     
     [self.mainViewController updateInteractiveTransition:progress];
@@ -173,8 +150,7 @@ static CGFloat const kActionButtonSmallSize = 50.0;
     [self transformContentWithProgress:progress];
 }
 
-- (void)cancelInteractiveTransition
-{
+- (void)cancelInteractiveTransition {
     self.overViewTopEstimatedValue = self.overViewTopConstraint.constant;
     
     [self.mainViewController cancelInteractiveTransition];
@@ -200,8 +176,7 @@ static CGFloat const kActionButtonSmallSize = 50.0;
                      completion:CompletionBlock];
 }
 
-- (void)finishInteractiveTransition
-{
+- (void)finishInteractiveTransition {
     [self.mainViewController finishInteractiveTransition];
     [self.overViewController finishInteractiveTransition];
     
@@ -225,13 +200,11 @@ static CGFloat const kActionButtonSmallSize = 50.0;
     
     __block typeof(self) blockSelf = self;
     
-    void (^AnimationBlock)(void) = ^void (void)
-    {
+    void (^AnimationBlock)(void) = ^void (void) {
         [blockSelf transformContentWithProgress:progress];
     };
     
-    void (^CompletionBlock)(BOOL finished) = ^void (BOOL finished)
-    {
+    void (^CompletionBlock)(BOOL finished) = ^void (BOOL finished) {
         blockSelf.overViewTopConstraint.constant =
         newOverViewTopConstraintConstant;
         
@@ -262,8 +235,7 @@ static CGFloat const kActionButtonSmallSize = 50.0;
 
 #pragma mark - Gesture
 
-- (void)addGestureRecogniserOnView:(UIView*)view
-{
+- (void)addGestureRecogniserOnView:(UIView*)view {
     UIPanGestureRecognizer *panGesture =
     [[UIPanGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleGestureRecognizer:)];
@@ -271,8 +243,7 @@ static CGFloat const kActionButtonSmallSize = 50.0;
     [view addGestureRecognizer:panGesture];
 }
 
-- (void)handleGestureRecognizer:(UIPanGestureRecognizer*)gesture
-{
+- (void)handleGestureRecognizer:(UIPanGestureRecognizer*)gesture {
     CGPoint translation = [gesture translationInView:self.view];
     CGPoint velocity = [gesture velocityInView:self.view];
     
@@ -359,6 +330,5 @@ static CGFloat const kActionButtonSmallSize = 50.0;
             break;
     }
 }
-
 
 @end
